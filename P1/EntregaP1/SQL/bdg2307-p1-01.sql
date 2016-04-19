@@ -1,0 +1,17 @@
+--1
+SELECT C.NOMBRE, C.TELEFONO
+FROM CASA C
+WHERE C.IDCASA IN (
+            SELECT P.CASA
+            FROM PLAN P
+            WHERE (P.TURNO='M')         
+)
+INTERSECT
+SELECT C.NOMBRE, C.TELEFONO
+FROM CASA C
+WHERE C.IDCASA IN (
+            SELECT P.CASA
+            FROM PLAN P
+            WHERE (P.TURNO='T')
+)        
+ORDER BY NOMBRE;
