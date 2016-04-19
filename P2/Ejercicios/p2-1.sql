@@ -12,10 +12,10 @@ CREATE TABLE ONG (
   codigo            CHAR(5) NOT NULL,
   nombre            VARCHAR(30) NOT NULL,
   email             VARCHAR(30) NOT NULL,
-  telef             NUMBER(9)	NULL,
+  telf             NUMBER(9)	NULL,
   provincia         VARCHAR(20) NOT NULL,
   campo             VARCHAR(40) NOT NULL,
-  responsable       CHAR(9) NOT NULL,
+  responsable       CHAR(9) NULL,
   
   CONSTRAINT ong_pk PRIMARY KEY(codigo)
 );
@@ -24,7 +24,7 @@ CREATE TABLE ONG (
 -- sueldo)
 CREATE TABLE TRABAJADOR (
   dni               CHAR(9)	NULL,
-  nombre            VARCHAR(30) NOT NULL,
+  nombre            VARCHAR(50) NOT NULL,
   ong               CHAR(5) NOT NULL,
   fechaingreso      DATE NOT NULL,
   esvoluntario      CHAR(1) NOT NULL,
@@ -35,11 +35,16 @@ CREATE TABLE TRABAJADOR (
   
   CONSTRAINT trabajador_pk PRIMARY KEY(dni),
   CONSTRAINT trabajador_fk_ong FOREIGN KEY(ong) 
-        REFERENCES ONG(codigo)
-        -- on delete y on update  
+        REFERENCES ONG(codigo),
+        -- on delete y on update
+  CONSTRAINT trabajador_esvoluntario CHECK ((esvoluntario IN ('S', 'N')) AND
+                                          (esvoluntario='S' AND sueldo=0) AND
+                                          (esvoluntario='N' AND sueldo>0)),
+  CONSTRAINT trabajador_horas CHECK (horas>0)
+  
 );
---comentario ejemplo git
--- Este es mi comentario ahora PUUUM
+
+--Añadimos la fk a ong, ahora que ya esta creada la tabla trabajador
 ALTER TABLE ONG ADD CONSTRAINT ong_fk_tabajador
   FOREIGN KEY(responsable) REFERENCES TRABAJADOR(dni)
   ON DELETE SET NULL;
@@ -66,8 +71,9 @@ CREATE TABLE COLABORACION (
         REFERENCES ONG(codigo),
         -- on delete y on update
   CONSTRAINT colaboracion_fk_socio FOREIGN KEY(socio) 
-        REFERENCES SOCIO(dni)
+        REFERENCES SOCIO(dni),
         -- on delete y on update
+  CONSTRAINT colaboracion_cuota CHECK (cuota>0)
 );
 
 -- PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
@@ -81,8 +87,9 @@ CREATE TABLE PROYECTO (
   
   CONSTRAINT proyecto_pk PRIMARY KEY(ong, idproyecto),
   CONSTRAINT proyecto_fk_ong FOREIGN KEY(ong) 
-        REFERENCES ONG(codigo)
-        -- on delete y on update  
+        REFERENCES ONG(codigo),
+        -- on delete y on update
+  CONSTRAINT proyecto_numbeneficiarios CHECK (numbeneficiarios>0)
 );
 
 
