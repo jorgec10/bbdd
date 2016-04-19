@@ -20,6 +20,7 @@ INSERT INTO ONG (codigo, nombre, email, telf, provincia, campo, responsable)
 VALUES ('O09', 'CARE INTERNATIONAL', 'careinternational@ong.com', 968730362, 'Murcia', 'ayuda humanitaria', '86439637L');
 INSERT INTO ONG (codigo, nombre, email, telf, provincia, campo, responsable)
 VALUES ('O10', 'MERCY CORPS', 'mercycorps@ong.com', 987730362, 'Leon', 'ayuda humanitaria', '67618541B');
+
 COMMIT;
 
 -- TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento, profesion, horas, sueldo)
@@ -54,7 +55,7 @@ VALUES ('97285751A', 'Victor Almansa Jimenez', 'O01', TO_DATE('12/04/2005', 'dd/
 INSERT INTO TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento, profesion, horas, sueldo)
 VALUES ('98742638P', 'Antonio Martinez Menarguez', 'O04', TO_DATE('27/12/2003', 'dd/mm/yyyy'), 'S', TO_DATE('10/09/1989', 'dd/mm/yyyy'), 'informatico', 5, 0);
 INSERT INTO TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento, profesion, horas, sueldo)
-VALUES ('87454153C', 'David Nortes Madrid', 'MERCY CORPS', TO_DATE('05/04/2008', 'dd/mm/yyyy'), 'S', TO_DATE('10/03/1980', 'dd/mm/yyyy'), 'barrendero', 3, 0);
+VALUES ('87454153C', 'David Nortes Madrid', 'O10', TO_DATE('05/04/2008', 'dd/mm/yyyy'), 'S', TO_DATE('10/03/1980', 'dd/mm/yyyy'), 'barrendero', 3, 0);
 INSERT INTO TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento, profesion, horas, sueldo)
 VALUES ('88692703S', 'Jose Teron Lopez', 'O05', TO_DATE('19/06/2000', 'dd/mm/yyyy'), 'N', TO_DATE('10/10/1970', 'dd/mm/yyyy'), 'abogado', 20, 1000);
 INSERT INTO TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento, profesion, horas, sueldo)
@@ -337,11 +338,29 @@ VALUES('O06', '09', '1', 'Recogida de ropa en contenedores especiales');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
 VALUES('O06', '09', '2', 'Reparto de las prendas');
 
-
 -- PARTICIPACION (ong, idproyecto, idaccion, trabajador)
 INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
 VALUES ('O06', '09', '2', '83548716A');
-COMMIT;
+INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
+VALUES ('O04', '03', '1', '98742638P');
+INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
+VALUES ('O01', '07', '2', '11376993S');
+INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
+VALUES ('O01', '07', '1', '98344693R');
+INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
+VALUES ('O10', '02', '1', '87454153C');
+INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
+VALUES ('O05', '08', '2', '88692703S');
+INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
+VALUES ('O08', '01', '2', '35469075Q');
+INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
+VALUES ('O02', '06', '1', '44814049N');
+INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
+VALUES ('O03', '08', '1', '24971685G');
+INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
+VALUES ('O07', '04', '2', '71295094G');
+--10
+
 
 
 
