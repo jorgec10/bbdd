@@ -39,7 +39,7 @@ CREATE TABLE TRABAJADOR (
         -- on delete y on update  
 );
 --comentario ejemplo git
-
+-- Este es mi comentario ahora PUUUM
 ALTER TABLE ONG ADD CONSTRAINT ong_fk_tabajador
   FOREIGN KEY(responsable) REFERENCES TRABAJADOR(dni)
   ON DELETE SET NULL;
