@@ -38,6 +38,7 @@ CREATE TABLE TRABAJADOR (
         REFERENCES ONG(codigo)
         -- on delete y on update  
 );
+--comentario ejemplo git
 
 ALTER TABLE ONG ADD CONSTRAINT ong_fk_tabajador
   FOREIGN KEY(responsable) REFERENCES TRABAJADOR(dni)
