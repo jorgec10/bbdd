@@ -1,5 +1,7 @@
 -- ONG (codigo, nombre, email, telf, provincia, campo, responsable) 
 
+ALTER TABLE ONG DISABLE CONSTRAINT ong_fk_tabajador;
+
 INSERT INTO ONG (codigo, nombre, email, telf, provincia, campo, responsable)
 VALUES ('O01', 'MEDICOS SIN FRONTERAS', 'medicossinfronteras@ong.com', 964730362, 'Castellon', 'asistencia sanitaria', '90929946V');
 INSERT INTO ONG (codigo, nombre, email, telf, provincia, campo, responsable)
@@ -20,8 +22,10 @@ INSERT INTO ONG (codigo, nombre, email, telf, provincia, campo, responsable)
 VALUES ('O09', 'CARE INTERNATIONAL', 'careinternational@ong.com', 968730362, 'Murcia', 'ayuda humanitaria', '86439637L');
 INSERT INTO ONG (codigo, nombre, email, telf, provincia, campo, responsable)
 VALUES ('O10', 'MERCY CORPS', 'mercycorps@ong.com', 987730362, 'Leon', 'ayuda humanitaria', '67618541B');
-
 COMMIT;
+
+
+
 
 -- TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento, profesion, horas, sueldo)
 --Responsables
@@ -75,9 +79,19 @@ INSERT INTO TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento
 VALUES ('73710346E', 'Sara Lopez Fernandez', 'O10', TO_DATE('24/02/2004', 'dd/mm/yyyy'), 'S', TO_DATE('26/01/1979', 'dd/mm/yyyy'), 'contable', 7, 0);
 INSERT INTO TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento, profesion, horas, sueldo)
 VALUES ('27012870W', 'Enrique Perez Roldan', 'O02', TO_DATE('04/10/2000', 'dd/mm/yyyy'), 'S', TO_DATE('05/03/1973', 'dd/mm/yyyy'), 'jardinero', 6, 0);
-INSERT INTO TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento, profesion, horas, sueldo)
-VALUES ('90929946V', 'Takahasi Nohara Takikawa', 'O03', TO_DATE('19/04/2016', 'dd/mm/yyyy'), 'N', TO_DATE('06/12/1986', 'dd/mm/yyyy'), 'programador', 40, 3500);
---25
+--24
+COMMIT;
+
+ALTER TABLE ONG ENABLE CONSTRAINT ong_fk_tabajador;
+  
+ALTER TABLE TRABAJADOR ADD CONSTRAINT trabajador_esvoluntario CHECK ((esvoluntario ='S' AND sueldo=0) 
+                                                                    OR (esvoluntario='N' AND sueldo>0));
+ALTER TABLE TRABAJADOR ADD  CONSTRAINT trabajador_horas CHECK (horas>0);
+        -- on delete y on update 
+
+
+
+
 
 -- SOCIO (dni, nombre)
 INSERT INTO SOCIO (dni, nombre)
@@ -142,9 +156,8 @@ INSERT INTO SOCIO (dni, nombre)
 VALUES ('79065140R', 'Fernando Real Collado');
 INSERT INTO SOCIO (dni, nombre)
 VALUES ('19652585K', 'Antonio Marcos Rangel');
--30
-
-
+--30
+COMMIT;
 
 -- COLABORACION (ong, socio, fechaalta, cuota)
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
@@ -175,7 +188,7 @@ VALUES('O03', '63735745M', TO_DATE('17/03/2012', 'dd/mm/yyyy'), 908);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
 VALUES('O06', '96221688P', TO_DATE('19/02/2015', 'dd/mm/yyyy'), 473);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
-VALUES('O00', '37412388C', TO_DATE('30/12/2014', 'dd/mm/yyyy'), 240);
+VALUES('O07', '37412388C', TO_DATE('30/12/2014', 'dd/mm/yyyy'), 240);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
 VALUES('O01', '89116783T', TO_DATE('26/05/2014', 'dd/mm/yyyy'), 513);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
@@ -200,7 +213,7 @@ VALUES('O05', '43687995P', TO_DATE('13/09/2011', 'dd/mm/yyyy'), 317);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
 VALUES('O06', '91677090C', TO_DATE('04/04/2012', 'dd/mm/yyyy'), 381);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
-VALUES('O00', '53927862N', TO_DATE('26/09/2013', 'dd/mm/yyyy'), 640);
+VALUES('O10', '53927862N', TO_DATE('26/09/2013', 'dd/mm/yyyy'), 640);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
 VALUES('O02', '91015380N', TO_DATE('12/06/2011', 'dd/mm/yyyy'), 954);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
@@ -217,7 +230,7 @@ VALUES('O03', '33083395Y', TO_DATE('14/12/2013', 'dd/mm/yyyy'), 799);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
 VALUES('O05', '65772743Q', TO_DATE('29/08/2015', 'dd/mm/yyyy'), 942);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
-VALUES('O01', '53927862N' TO_DATE('20/05/2015', 'dd/mm/yyyy'), 569);
+VALUES('O01', '53927862N', TO_DATE('20/05/2015', 'dd/mm/yyyy'), 569);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
 VALUES('O01', '19652585K', TO_DATE('02/08/2014', 'dd/mm/yyyy'), 868);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
@@ -231,112 +244,135 @@ VALUES('O01', '52837421C', TO_DATE('28/10/2014', 'dd/mm/yyyy'), 515);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
 VALUES('O01', '65896087A', TO_DATE('24/06/2015', 'dd/mm/yyyy'), 765);
 --40
+COMMIT;
+
+ALTER TABLE COLABORACION ADD CONSTRAINT colaboracion_cuota CHECK (cuota>0);
 
 
 
 -- PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O08', '01', 'Reforestación', 'Brasil', 'Sur', 641);
+VALUES('O01', '07', 'Vacunación', 'Zambia', 'Sur', 91);
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O10', '02', 'Asitencia en desastres naturales', 'Ecuador', 'Oeste', 100);
-INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O04', '03', 'Investigación historia del pais', 'Angola', 'Sur', 230);
-INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O07', '04', 'Construir hospitales', 'Colombia', 'Sur', 635);
-INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O05', '05', 'Construcción de infraestructuras', 'Nigeria', 'Este', 187);
+VALUES('O01', '11', 'Vacunacion', 'Burkina Faso', 'Oeste', 702);
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
 VALUES('O02', '06', 'Hogar para personas sin techo', 'Perú', 'Norte', 675);
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O01', '07', 'Vacunación', 'Burkina Faso', 'Oeste', 702);
+VALUES('O02', '12', 'Hogar para personas sin techo', 'Somalia', 'Sur', 703);
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
 VALUES('O03', '08', 'Construir escuelas', 'Ecuador', 'Oeste', 539);
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O09', '09', 'Ropa para personas sin recursos', 'Mali', 'Sur', 533);
+VALUES('O04', '03', 'Investigación historia del pais', 'Angola', 'Sur', 230);
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O06', '10', 'Comida para personas sin recursos', 'Chad', 'Norte', 386);
---10
+VALUES('O05', '05', 'Construcción de infraestructuras', 'Nigeria', 'Este', 187);
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
 VALUES('O05', '08', 'Construir escuelas', 'Costa Rica', 'Este', 161);
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O09', '02', 'Asitencia en desastres naturales', 'Bolivia', 'Este', 912);
+VALUES('O07', '04', 'Construir hospitales', 'Colombia', 'Sur', 635);
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O10', '02', 'Asitencia en desastres naturales', 'Panamá', 'Este', 44);
+VALUES('O06', '10', 'Comida para personas sin recursos', 'Chad', 'Norte', 386);
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O08', '01', 'Reforestación', 'El Salvador', 'Sur', 622);
-INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O10', '09', 'Ropa para personas sin recursos', 'Paraguay', 'Oeste', 140);
-INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O10', '02', 'Asitencia en desastres naturales', 'Nepal', 'Sur', 957);
-INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O06', '10', 'Comida para personas sin recursos', 'Nicaragua', 'Oeste', 429);
+VALUES('O06', '13', 'Comida para personas sin recursos', 'Nicaragua', 'Oeste', 429);
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
 VALUES('O06', '09', 'Ropa para personas sin recursos', 'Haití', 'Norte', 368);
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O01', '07', 'Vacunación', 'Zambia', 'Sur', 91);
+VALUES('O08', '01', 'Reforestación', 'Brasil', 'Sur', 641);
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
-VALUES('O02', '06', 'Hogar para personas sin techo', 'Somalia', 'Sur', 703);
+VALUES('O08', '14', 'Reforestación', 'El Salvador', 'Sur', 622);
+INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
+VALUES('O09', '09', 'Ropa para personas sin recursos', 'Mali', 'Sur', 533);
+INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
+VALUES('O09', '02', 'Asitencia en desastres naturales', 'Bolivia', 'Este', 912);
+INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
+VALUES('O10', '02', 'Asitencia en desastres naturales', 'Ecuador', 'Oeste', 100);
+INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
+VALUES('O10', '09', 'Ropa para personas sin recursos', 'Paraguay', 'Oeste', 140);
+INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
+VALUES('O10', '15', 'Asitencia en desastres naturales', 'Nepal', 'Sur', 957);
+COMMIT;
 
+ALTER TABLE PROYECTO ADD CONSTRAINT proyecto_numbeneficiarios CHECK (numbeneficiarios>0);
 
 --ACCION (ong, idproyecto, idaccion, descripcion)
-INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O08', '01', '1', 'Conseguir semillas');
-INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O08', '01', '2', 'Plantar semillas');
-INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O10', '02', '1', 'Formación equipos y transporte');
-INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O10', '02', '2', 'Asignación de tareas');
-INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O04', '03', '1', 'Recabar información');
-INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O04', '03', '2', 'Contraste de fuentes');
-INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O07', '04', '1', 'Diseño y conseguir materiales');
-INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O07', '04', '2', 'Construcción');
-INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O05', '05', '1', 'Diseño y conseguir materiales');
-INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O05', '05', '2', 'Construcción');
-INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O02', '06', '1', 'Búsqueda de hogares disponibles');
-INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O02', '06', '2', 'Asignación a las familias');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
 VALUES('O01', '07', '1', 'Fabricación de las vacunas');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
 VALUES('O01', '07', '2', 'Distribución de las vacunas');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O01', '11', '1', 'Fabricación de las vacunas');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O01', '11', '2', 'Distribución de las vacunas');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
 VALUES('O01', '07', '3', 'Aplicación de las vacunas');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O02', '06', '1', 'Búsqueda de hogares disponibles');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O02', '06', '2', 'Asignación a las familias');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O02', '12', '1', 'Búsqueda de hogares disponibles');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O02', '12', '2', 'Asignación a las familias');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
 VALUES('O03', '08', '1', 'Diseño y conseguir materiales');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
 VALUES('O03', '08', '2', 'Construcción');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O09', '09', '1', 'Recogida de ropa en contenedores especiales');
+VALUES('O04', '03', '1', 'Recabar información');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O09', '09', '2', 'Reparto de las prendas');
+VALUES('O04', '03', '2', 'Contraste de fuentes');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O06', '10', '1', 'Recolección de alimentos');
+VALUES('O05', '05', '1', 'Diseño y conseguir materiales');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O06', '10', '2', 'Reparto a la población');
+VALUES('O05', '05', '2', 'Construcción');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
 VALUES('O05', '08', '1', 'Diseño y conseguir materiales');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
 VALUES('O05', '08', '2', 'Construcción');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O06', '09', '1', 'Recogida de ropa en contenedores especiales');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O06', '09', '2', 'Reparto de las prendas');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O06', '10', '1', 'Recolección de alimentos');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O06', '10', '2', 'Reparto a la población');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O06', '13', '1', 'Recolección de alimentos');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O06', '13', '2', 'Reparto a la población');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O07', '04', '1', 'Diseño y conseguir materiales');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O07', '04', '2', 'Construcción');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O08', '01', '1', 'Conseguir semillas');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O08', '01', '2', 'Plantar semillas');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O08', '14', '1', 'Conseguir semillas');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O08', '14', '2', 'Plantar semillas');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O09', '09', '1', 'Recogida de ropa en contenedores especiales');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O09', '09', '2', 'Reparto de las prendas');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
 VALUES('O09', '02', '1', 'Formación equipos y transporte');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
 VALUES('O09', '02', '2', 'Asignación de tareas');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O10', '02', '1', 'Formación equipos y transporte');
+INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
+VALUES('O10', '02', '2', 'Asignación de tareas');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
 VALUES('O10', '09', '1', 'Recogida de ropa en contenedores especiales');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
 VALUES('O10', '09', '2', 'Reparto de las prendas');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O06', '09', '1', 'Recogida de ropa en contenedores especiales');
+VALUES('O10', '15', '1', 'Formación equipos y transporte');
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
-VALUES('O06', '09', '2', 'Reparto de las prendas');
+VALUES('O10', '15', '2', 'Asignación de tareas');
+COMMIT;
 
 -- PARTICIPACION (ong, idproyecto, idaccion, trabajador)
 INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
@@ -360,9 +396,17 @@ VALUES ('O03', '08', '1', '24971685G');
 INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
 VALUES ('O07', '04', '2', '71295094G');
 --10
+COMMIT;
 
 
 
+SELECT * FROM ACCION;
+SELECT * FROM COLABORACION;
+SELECT * FROM ONG;
+SELECT * FROM PARTICIPACION;
+SELECT * FROM PROYECTO;
+SELECT * FROM SOCIO;
+SELECT * FROM TRABAJADOR;
 
 
 
