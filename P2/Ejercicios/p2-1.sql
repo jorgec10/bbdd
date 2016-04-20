@@ -22,7 +22,7 @@ CREATE TABLE ONG (
 -- TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento, profesion, horas,
 -- sueldo)
 CREATE TABLE TRABAJADOR (
-  dni               CHAR(9)	NULL,
+  dni               CHAR(9),
   nombre            VARCHAR(50) NOT NULL,
   ong               CHAR(5) NOT NULL,
   fechaingreso      DATE NOT NULL,
@@ -40,8 +40,7 @@ CREATE TABLE TRABAJADOR (
 
 --Añadimos la fk a ong, ahora que ya esta creada la tabla trabajador
 ALTER TABLE ONG ADD CONSTRAINT ong_fk_tabajador
-  FOREIGN KEY(responsable) REFERENCES TRABAJADOR(dni)
-  ON DELETE SET NULL;
+  FOREIGN KEY(responsable) REFERENCES TRABAJADOR(dni);
 
 
 -- SOCIO (dni, nombre)

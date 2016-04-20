@@ -79,6 +79,8 @@ INSERT INTO TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento
 VALUES ('73710346E', 'Sara Lopez Fernandez', 'O10', TO_DATE('24/02/2004', 'dd/mm/yyyy'), 'S', TO_DATE('26/01/1979', 'dd/mm/yyyy'), 'contable', 7, 0);
 INSERT INTO TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento, profesion, horas, sueldo)
 VALUES ('27012870W', 'Enrique Perez Roldan', 'O02', TO_DATE('04/10/2000', 'dd/mm/yyyy'), 'S', TO_DATE('05/03/1973', 'dd/mm/yyyy'), 'jardinero', 6, 0);
+INSERT INTO TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento, profesion, horas, sueldo)
+VALUES ('65772743Q', 'Raul Roldan Fandiño', 'O04', TO_DATE('06/11/1999', 'dd/mm/yyyy'), 'N', TO_DATE('17/01/1975', 'dd/mm/yyyy'), 'mimo', 40, 2000);
 --24
 COMMIT;
 
@@ -162,6 +164,10 @@ COMMIT;
 -- COLABORACION (ong, socio, fechaalta, cuota)
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
 VALUES('O01', '65772743Q', TO_DATE('21/09/2015', 'dd/mm/yyyy'), 103);
+INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
+VALUES('O02', '65772743Q', TO_DATE('08/03/2006', 'dd/mm/yyyy'), 200);
+INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
+VALUES('O03', '65772743Q', TO_DATE('17/12/2000', 'dd/mm/yyyy'), 50);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
 VALUES('O02', '52837421C', TO_DATE('10/12/2015', 'dd/mm/yyyy'), 15);
 INSERT INTO COLABORACION (ong, socio, fechaalta, cuota)
@@ -395,9 +401,12 @@ INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
 VALUES ('O03', '08', '1', '24971685G');
 INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
 VALUES ('O07', '04', '2', '71295094G');
+INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
+VALUES ('O04', '03', '1', '65772743Q');
+INSERT INTO PARTICIPACION (ong, idproyecto, idaccion, trabajador)
+VALUES ('O04', '03', '2', '65772743Q');
 --10
 COMMIT;
-
 
 
 SELECT * FROM ACCION;
