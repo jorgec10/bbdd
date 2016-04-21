@@ -85,15 +85,6 @@ VALUES ('65772743Q', 'Raul Roldan Fandiño', 'O04', TO_DATE('06/11/1999', 'dd/mm/
 COMMIT;
 
 ALTER TABLE ONG ENABLE CONSTRAINT ong_fk_tabajador;
-  
-ALTER TABLE TRABAJADOR ADD CONSTRAINT trabajador_esvoluntario CHECK ((esvoluntario ='S' AND sueldo=0) 
-                                                                    OR (esvoluntario='N' AND sueldo>0));
-ALTER TABLE TRABAJADOR ADD  CONSTRAINT trabajador_horas CHECK (horas>0);
-        -- on delete y on update 
-
-
-
-
 
 -- SOCIO (dni, nombre)
 INSERT INTO SOCIO (dni, nombre)
@@ -281,10 +272,6 @@ VALUES('O01', '65896087A', TO_DATE('24/06/2015', 'dd/mm/yyyy'), 765);
 --40
 COMMIT;
 
-ALTER TABLE COLABORACION ADD CONSTRAINT colaboracion_cuota CHECK (cuota>0);
-
-
-
 -- PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
 VALUES('O01', '07', 'Vacunación', 'Zambia', 'Sur', 91);
@@ -325,8 +312,6 @@ VALUES('O10', '09', 'Ropa para personas sin recursos', 'Paraguay', 'Oeste', 140)
 INSERT INTO PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
 VALUES('O10', '15', 'Asitencia en desastres naturales', 'Nepal', 'Sur', 957);
 COMMIT;
-
-ALTER TABLE PROYECTO ADD CONSTRAINT proyecto_numbeneficiarios CHECK (numbeneficiarios>0);
 
 --ACCION (ong, idproyecto, idaccion, descripcion)
 INSERT INTO ACCION (ong, idproyecto, idaccion, descripcion)
@@ -458,27 +443,3 @@ SELECT * FROM PARTICIPACION;
 SELECT * FROM PROYECTO;
 SELECT * FROM SOCIO;
 SELECT * FROM TRABAJADOR;*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
