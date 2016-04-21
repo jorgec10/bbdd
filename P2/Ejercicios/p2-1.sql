@@ -18,6 +18,8 @@ CREATE TABLE ONG (
   responsable       CHAR(9) NULL,
   
   CONSTRAINT ong_pk PRIMARY KEY(codigo)
+  --ON DELETE NO ACTION
+  --ON UPDATE CASCADE
 );
 -- TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento, profesion, horas,
 -- sueldo)
@@ -35,7 +37,7 @@ CREATE TABLE TRABAJADOR (
   CONSTRAINT trabajador_pk PRIMARY KEY(dni),
   CONSTRAINT trabajador_fk_ong FOREIGN KEY(ong) 
         REFERENCES ONG(codigo)
-        -- on delete y on update  
+        --   
 );
 
 --Añadimos la fk a ong, ahora que ya esta creada la tabla trabajador
