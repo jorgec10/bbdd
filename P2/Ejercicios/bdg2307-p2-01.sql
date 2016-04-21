@@ -1,37 +1,31 @@
-DROP TABLE PARTICIPACION;
-DROP TABLE ACCION;
-DROP TABLE PROYECTO;
-DROP TABLE COLABORACION; 
-DROP TABLE SOCIO;
-DROP TABLE TRABAJADOR CASCADE CONSTRAINT;
-DROP TABLE ONG;
-
+--Ejercicio 1. Creación de las tablas.
 
 -- ONG (codigo, nombre, email, telf, provincia, campo, responsable) 
 CREATE TABLE ONG (
-  codigo            CHAR(5),
+  codigo            CHAR(3),
   nombre            VARCHAR(30) NOT NULL,
   email             VARCHAR(30) NULL,
   telf             NUMBER(9)	NULL,
-  provincia         VARCHAR(20) NOT NULL,
-  campo             VARCHAR(40) NOT NULL,
+  provincia         VARCHAR(20) NULL,
+  campo             VARCHAR(40) NULL,
   responsable       CHAR(9) NOT NULL,
   
   CONSTRAINT ong_pk PRIMARY KEY(codigo)
   --ON DELETE CASCADE
   --ON UPDATE CASCADE
 );
+
 -- TRABAJADOR (dni, nombre, ong, fechaingreso, esvoluntario, nacimiento, profesion, horas,
 -- sueldo)
 CREATE TABLE TRABAJADOR (
   dni               CHAR(9),
-  nombre            VARCHAR(50) NOT NULL,
-  ong               CHAR(5) NOT NULL,
-  fechaingreso      DATE NOT NULL,
+  nombre            VARCHAR(40) NOT NULL,
+  ong               CHAR(3) NOT NULL,
+  fechaingreso      DATE NULL,
   esvoluntario      CHAR(1) NOT NULL,
-  nacimiento        DATE NOT NULL,
+  nacimiento        DATE NULL,
   profesion         VARCHAR(20) NULL,
-  horas             NUMBER(3,1) NOT NULL,
+  horas             NUMBER(3,1) NULL,
   sueldo            NUMBER(6,1) NULL,
   
   CONSTRAINT trabajador_pk PRIMARY KEY(dni),
@@ -50,9 +44,12 @@ CREATE TABLE TRABAJADOR (
 ALTER TABLE ONG ADD CONSTRAINT ong_fk_tabajador
   FOREIGN KEY(responsable) REFERENCES TRABAJADOR(dni);
 
+--Añadimos la restriccion para que cada ong tenga un único responsable
+ALTER TABLE ONG ADD CONSTRAINT unico_responsable UNIQUE (responsable);
+  
 -- SOCIO (dni, nombre)
 CREATE TABLE SOCIO (
-  dni               CHAR(9) NOT NULL,
+  dni               CHAR(9),
   nombre            VARCHAR(30) NOT NULL,
  
   CONSTRAINT socio_pk PRIMARY KEY(dni)
@@ -62,10 +59,10 @@ CREATE TABLE SOCIO (
 
 -- COLABORACION (ong, socio, fechaalta, cuota)
 CREATE TABLE COLABORACION (
-  ong               CHAR(5) NOT NULL,
-  socio             CHAR(9) NOT NULL,
-  fechaalta         DATE NOT NULL,
-  cuota             NUMBER(4,1),
+  ong               CHAR(3),
+  socio             CHAR(9),
+  fechaalta         DATE NULL,
+  cuota             NUMBER(4,1) NULL,
   
   CONSTRAINT colaboracion_pk PRIMARY KEY(ong, socio),
   CONSTRAINT colaboracion_fk_ong FOREIGN KEY(ong) 
@@ -79,12 +76,12 @@ CREATE TABLE COLABORACION (
 
 -- PROYECTO (ong, idproyecto, objetivo, pais, zona, numbeneficiarios)
 CREATE TABLE PROYECTO (
-  ong               CHAR(5) NOT NULL,
-  idproyecto        CHAR(5) NOT NULL,
-  objetivo          VARCHAR(50) NOT NULL,
-  pais              VARCHAR(20) NOT NULL,
-  zona              VARCHAR(20) NOT NULL,
-  numbeneficiarios  NUMBER(4,1),
+  ong               CHAR(3),
+  idproyecto        CHAR(2),
+  objetivo          VARCHAR(40) NULL,
+  pais              VARCHAR(20) NULL,
+  zona              VARCHAR(20) NULL,
+  numbeneficiarios  NUMBER(4,1) NULL,
   
   CONSTRAINT proyecto_pk PRIMARY KEY(ong, idproyecto),
   CONSTRAINT proyecto_fk_ong FOREIGN KEY(ong) 
@@ -97,10 +94,10 @@ CREATE TABLE PROYECTO (
 
 -- ACCION (ong, idproyecto, idaccion, descripcion)
 CREATE TABLE ACCION (
-  ong               CHAR(5) NOT NULL,
-  idproyecto        CHAR(5) NOT NULL,
-  idaccion          CHAR(5) NOT NULL,
-  descripcion       VARCHAR(50) NOT NULL,
+  ong               CHAR(3),
+  idproyecto        CHAR(2),
+  idaccion          CHAR(5),
+  descripcion       VARCHAR(50) NULL,
   
   CONSTRAINT accion_pk PRIMARY KEY(ong, idproyecto, idaccion),
   CONSTRAINT accion_fk_ong FOREIGN KEY(ong) 
@@ -111,13 +108,12 @@ CREATE TABLE ACCION (
   --ON UPDATE CASCADE
 );
 
-
 -- PARTICIPACION (ong, idproyecto, idaccion, trabajador)
 CREATE TABLE PARTICIPACION (
-  ong               CHAR(5) NOT NULL,
-  idproyecto        CHAR(5) NOT NULL,
-  idaccion          CHAR(5) NOT NULL,
-  trabajador        CHAR(9) NOT NULL,
+  ong               CHAR(3),
+  idproyecto        CHAR(2),
+  idaccion          CHAR(5),
+  trabajador        CHAR(9),
   
   CONSTRAINT participacion_pk PRIMARY KEY(ong, idproyecto, idaccion, trabajador),
   CONSTRAINT participacion_fk_ong FOREIGN KEY(ong) 
@@ -128,6 +124,6 @@ CREATE TABLE PARTICIPACION (
         REFERENCES ACCION(ong, idproyecto, idaccion),   
   CONSTRAINT participacion_fk_trabajador FOREIGN KEY(trabajador) 
         REFERENCES TRABAJADOR(dni)
-  --ON DELETE CASCADE
-  --ON UPDATE CASCADE
+  --ON DELETE NO ACTION
+  --ON UPDATE NO ACTION
 );
