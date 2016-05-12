@@ -1,8 +1,8 @@
 CREATE OR REPLACE PROCEDURE equipo_trabajador (
-  dni_ IN trabajador.dni%type;
+  dni_ IN trabajador.dni%type
 )
 IS 
-  x trabajador.nombre%type);
+  x trabajador.nombre%type;
   cod TRABAJADOR.ONG%TYPE;
   numtrabajadores integer;
   dni trbajador.dni%type;
@@ -18,7 +18,7 @@ BEGIN
     WHEN NO_DATA_FOUND THEN DBMS_OUTPUT.PUT_LINE('TRABAJADOR INEXISTENTE');
 END;
 /
-CALL  equipo_trabajador('90929946V');s
+CALL  equipo_trabajador('90929946V');
 /
 
-SELECT * FROM ONG;
+--SELECT * FROM ONG;
