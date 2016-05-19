@@ -1,19 +1,25 @@
 SET SERVEROUTPUT ON;
 BEGIN
-  DBMS_OUTPUT.PUT_LINE(p_ong.quien_es('65772743Q'));
-  --P_ONG.cooperacion('65772743Q'); --Trabajador/socio
+  --DBMS_OUTPUT.PUT_LINE(p_ong.quien_es('65772743Q'));
+  P_ONG.cooperacion('65772743Q'); --Trabajador/socio
 END;
 
 SET SERVEROUTPUT ON;
 BEGIN
-  DBMS_OUTPUT.PUT_LINE(p_ong.quien_es('90929946V'));
-  --P_ONG.cooperacion('90929946V'); --Trabajador
+  --DBMS_OUTPUT.PUT_LINE(p_ong.quien_es('90929946V'));
+  P_ONG.cooperacion('90929946V'); --Trabajador
 END;
 
 SET SERVEROUTPUT ON;
 BEGIN
-  DBMS_OUTPUT.PUT_LINE(p_ong.quien_es('19652585K'));
-  --P_ONG.cooperacion('19652585K'); --Socio
+  --DBMS_OUTPUT.PUT_LINE(p_ong.quien_es('19652585K'));
+  P_ONG.cooperacion('19652585K'); --Socio
+END;
+
+SET SERVEROUTPUT ON;
+BEGIN
+  --DBMS_OUTPUT.PUT_LINE(p_ong.quien_es('00000000K'));
+  P_ONG.cooperacion('00000000K'); --Persona no encontrada
 END;
 
 
@@ -201,6 +207,10 @@ PACKAGE BODY P_ONG IS
                   --Imprimimos los datos de la ONG
                   DBMS_OUTPUT.PUT_LINE('   - ONG: ' || nomOng || '; CUOTA: ' || cuotaSoc || ' €.');
                 END LOOP;
+                
+                EXCEPTION 
+                  WHEN NO_DATA_FOUND THEN
+                    DBMS_OUTPUT.PUT_LINE('PERSONA NO ENCONTRADA');                
               END;
       END;        
   END;

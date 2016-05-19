@@ -23,6 +23,7 @@ BEGIN
   DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------');
   
   LOOP
+    
     FETCH trabajadores INTO trabajadorActual;
     FETCH socios INTO socioActual;
         
@@ -58,4 +59,3 @@ BEGIN
   CLOSE socios;
   
 END;
-/
